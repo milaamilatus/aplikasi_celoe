@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'courses_page.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
       case 1:
         return const CoursesPage();
       case 2:
-        return _buildProfileContent();
+        return const ProfilePage();
       default:
         return _buildHomeContent();
     }
@@ -117,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                          shape: BoxShape.circle,
                          border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
                          image: const DecorationImage(
-                           image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuCgjXhryIeOOK3wPmFswmsr75fCP7fG-EBtCgrdTfjak0Lrnx9541wYJlGbMoIk2uWGkzWMzkrXZXLBPz5q_1zJzOTp2y_knbtPyYiJyiIvatdBtkH5AuNCjpRg-StLjOZMDHTlgVw1dwJUrhx9SZyBOxm_nH7KiTa7KKeq3HihlzfrkZes53CcfFUYJY3nJFTebMeeGmUMqnWQwfFrROZ3WSG8DEDFA96yknx0kxhI-w-VbVblprpG5QagZBGB1Dq6kqMPdCFUJId_'),
+                           image: NetworkImage('https://img.freepik.com/premium-photo/portrait-young-business-woman-looking-camera-smile-white-wall_33799-8833.jpg'),
                            fit: BoxFit.cover,
                          ),
                        ),
