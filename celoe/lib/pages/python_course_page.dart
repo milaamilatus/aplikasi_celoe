@@ -21,7 +21,7 @@ class PythonCoursePage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Course Details",
+          "Detail Kursus",
           style: GoogleFonts.lexend(
             color: textColor,
             fontSize: 18,
@@ -79,7 +79,7 @@ class PythonCoursePage extends StatelessWidget {
                               border: Border.all(color: primaryColor.withOpacity(0.1)),
                             ),
                             child: Text(
-                              "Bestseller",
+                              "Terlaris",
                               style: GoogleFonts.lexend(
                                 color: Colors.white,
                                 fontSize: 12,
@@ -89,7 +89,7 @@ class PythonCoursePage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Master Python Programming",
+                            "Kuasai Pemrograman Python",
                             style: GoogleFonts.lexend(
                               color: Colors.white,
                               fontSize: 28,
@@ -109,8 +109,8 @@ class PythonCoursePage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildStatItem(Icons.signal_cellular_alt, "Beginner", primaryColor),
-                      _buildStatItem(Icons.schedule, "12 Hours", primaryColor),
+                      _buildStatItem(Icons.signal_cellular_alt, "Pemula", primaryColor),
+                      _buildStatItem(Icons.schedule, "12 Jam", primaryColor),
                       Row(
                         children: [
                           Row(
@@ -123,7 +123,7 @@ class PythonCoursePage extends StatelessWidget {
                             style: GoogleFonts.lexend(fontWeight: FontWeight.bold, color: textColor),
                           ),
                           Text(
-                            " (1.2k)",
+                            " (1.2rb)",
                             style: GoogleFonts.lexend(color: Colors.grey[400], fontSize: 12),
                           ),
                         ],
@@ -142,8 +142,8 @@ class PythonCoursePage extends StatelessWidget {
                     runSpacing: 8,
                     children: [
                       _buildTag("Python"),
-                      _buildTag("Coding"),
-                      _buildTag("Data Science"),
+                      _buildTag("Pengkodean"),
+                      _buildTag("Ilmu Data"),
                     ],
                   ),
                 ),
@@ -157,12 +157,12 @@ class PythonCoursePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "About this course",
+                        "Tentang Kursus Ini",
                         style: GoogleFonts.lexend(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Learn Python from scratch. This comprehensive course covers variables, loops, functions, and data analysis basics to get you job-ready. Perfect for beginners with no prior coding experience.",
+                        "Pelajari Python dari awal. Kursus komprehensif ini mencakup variabel, perulangan, fungsi, dan dasar-dasar analisis data untuk mempersiapkan Anda bekerja. Sangat cocok bagi pemula tanpa pengalaman coding sebelumnya.",
                         style: GoogleFonts.notoSans(fontSize: 14, color: Colors.grey[600], height: 1.5),
                       ),
                     ],
@@ -183,14 +183,14 @@ class PythonCoursePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "What you'll learn",
+                        "Yang Akan Anda Pelajari",
                         style: GoogleFonts.lexend(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
                       ),
                       const SizedBox(height: 16),
-                      _buildLearnItem("Understand Python syntax and basic concepts deeply", primaryColor),
-                      _buildLearnItem("Build real-world applications and scripts", primaryColor),
-                      _buildLearnItem("Automate boring tasks with simple Python programs", primaryColor),
-                      _buildLearnItem("Analyze data using Pandas and NumPy libraries", primaryColor),
+                      _buildLearnItem("Memahami sintaks dan konsep dasar Python secara mendalam", primaryColor),
+                      _buildLearnItem("Membangun aplikasi dan skrip dunia nyata", primaryColor),
+                      _buildLearnItem("Mengotomatiskan tugas-tugas membosankan dengan program Python sederhana", primaryColor),
+                      _buildLearnItem("Menganalisis data menggunakan pustaka Pandas dan NumPy", primaryColor),
                     ],
                   ),
                 ),
@@ -206,23 +206,23 @@ class PythonCoursePage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "Curriculum",
+                            "Kurikulum",
                             style: GoogleFonts.lexend(fontSize: 18, fontWeight: FontWeight.bold, color: textColor),
                           ),
                           Text(
-                            "12 Modules • 45 Lessons",
+                            "12 Modul • 45 Pelajaran",
                             style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.grey[500]),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildCurriculumItem("01. Getting Started", "15 mins • Introduction", Icons.play_arrow, primaryColor, isActive: true),
+                      _buildCurriculumItem("01. Memulai", "15 mnt • Pengenalan", Icons.play_arrow, primaryColor, isActive: true),
                       const SizedBox(height: 12),
-                      _buildCurriculumItem("02. Variables & Types", "45 mins • Fundamentals", Icons.lock, Colors.grey),
+                      _buildCurriculumItem("02. Variabel & Tipe", "45 mnt • Dasar-dasar", Icons.lock, Colors.grey),
                       const SizedBox(height: 12),
-                      _buildCurriculumItem("03. Control Flow", "1 hr • Logic", Icons.lock, Colors.grey),
+                      _buildCurriculumItem("03. Alur Kontrol", "1 jam • Logika", Icons.lock, Colors.grey),
                       const SizedBox(height: 12),
-                      _buildCurriculumItem("04. Functions", "55 mins • Reusability", Icons.lock, Colors.grey),
+                      _buildCurriculumItem("04. Fungsi", "55 mnt • Penggunaan Kembali", Icons.lock, Colors.grey),
                     ],
                   ),
                 ),
@@ -243,14 +243,14 @@ class PythonCoursePage extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Reviews", style: GoogleFonts.lexend(fontSize: 18, fontWeight: FontWeight.bold, color: textColor)),
+                              Text("Ulasan", style: GoogleFonts.lexend(fontSize: 18, fontWeight: FontWeight.bold, color: textColor)),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
                                   const Icon(Icons.star, size: 16, color: Colors.amber),
                                   const SizedBox(width: 4),
                                   Text("4.8", style: GoogleFonts.lexend(fontSize: 14, fontWeight: FontWeight.w600, color: textColor)),
-                                  Text(" (1.2k reviews)", style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
+                                  Text(" (1.2rb ulasan)", style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
                                 ],
                               ),
                             ],
@@ -262,16 +262,16 @@ class PythonCoursePage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              "Write a Review",
+                              "Tulis Ulasan",
                               style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: primaryColor),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 24),
-                      _buildReviewItem("JD", "Jane Cooper", "2 days ago", "Fantastic course! The instructor explains complex concepts very clearly. I finally understand decorators.", Colors.blue),
+                      _buildReviewItem("JD", "Jane Cooper", "2 hari lalu", "Kursus yang fantastis! Instruktur menjelaskan konsep yang rumit dengan sangat jelas. Saya akhirnya mengerti decorator.", Colors.blue),
                       const SizedBox(height: 24),
-                      _buildReviewItem("MK", "Mike Ross", "1 week ago", "Good content, but I wish there were more exercises on Pandas. Still worth the time.", Colors.green),
+                      _buildReviewItem("MK", "Mike Ross", "1 minggu lalu", "Konten bagus, tapi saya berharap ada lebih banyak latihan tentang Pandas. Masih layak untuk menghabiskan waktu.", Colors.green),
                       const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
@@ -283,7 +283,7 @@ class PythonCoursePage extends StatelessWidget {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                           ),
                           child: Text(
-                            "See all reviews",
+                            "Lihat semua ulasan",
                             style: GoogleFonts.lexend(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey[600]),
                           ),
                         ),
@@ -327,7 +327,7 @@ class PythonCoursePage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Start Course", style: GoogleFonts.lexend(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text("Mulai Kursus", style: GoogleFonts.lexend(fontSize: 16, fontWeight: FontWeight.bold)),
                     const SizedBox(width: 8),
                     const Icon(Icons.arrow_forward, size: 20),
                   ],
@@ -362,7 +362,7 @@ class PythonCoursePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            text == 'Python' ? Icons.code : (text == 'Coding' ? Icons.terminal : Icons.insights),
+            text == 'Python' ? Icons.code : (text == 'Pengkodean' ? Icons.terminal : Icons.insights),
             size: 16,
             color: Colors.grey[500],
           ),

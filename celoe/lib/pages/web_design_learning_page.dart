@@ -1,9 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class WebDesignLearningPage extends StatelessWidget {
+class WebDesignLearningPage extends StatefulWidget {
   const WebDesignLearningPage({super.key});
+
+  @override
+  State<WebDesignLearningPage> createState() => _WebDesignLearningPageState();
+}
+
+class _WebDesignLearningPageState extends State<WebDesignLearningPage> {
+  final TextEditingController _noteController = TextEditingController();
+  final String _noteKey = 'note_web_design_lesson1';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNote();
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _noteController.text = prefs.getString(_noteKey) ?? '';
+    });
+  }
+
+  Future<void> _saveNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_noteKey, _noteController.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Catatan tersimpan!')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +143,7 @@ class WebDesignLearningPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Introduction to HTML Structure",
+                    "Pengenalan Struktur HTML",
                     style: GoogleFonts.lexend(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -118,7 +157,7 @@ class WebDesignLearningPage extends StatelessWidget {
                       Icon(Icons.schedule, size: 16, color: Colors.grey[500]),
                       const SizedBox(width: 4),
                       Text(
-                        "Lesson 1 • 12 mins",
+                        "Pelajaran 1 • 12 mnt",
                         style: GoogleFonts.lexend(
                           fontSize: 14,
                           color: Colors.grey[500],
@@ -146,7 +185,7 @@ class WebDesignLearningPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Course Progress",
+                          "Progres Kursus",
                           style: GoogleFonts.lexend(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -175,7 +214,7 @@ class WebDesignLearningPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "2 of 12 lessons completed",
+                      "2 dari 12 pelajaran selesai",
                       style: GoogleFonts.lexend(
                         fontSize: 12,
                         color: Colors.grey[500],
@@ -195,7 +234,7 @@ class WebDesignLearningPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "My Notes",
+                        "Catatan Saya",
                         style: GoogleFonts.lexend(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -203,7 +242,7 @@ class WebDesignLearningPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "View all",
+                        "Lihat semua",
                         style: GoogleFonts.lexend(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -227,14 +266,14 @@ class WebDesignLearningPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
                             Container(
-                              width: 40,
-                              height: 40,
+                              width: 32,
+                              height: 32,
                               decoration: BoxDecoration(
                                 color: Colors.red[50],
                                 shape: BoxShape.circle,
@@ -242,37 +281,61 @@ class WebDesignLearningPage extends StatelessWidget {
                               child: const Icon(Icons.edit_note, color: primaryColor, size: 20),
                             ),
                             const SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Add a note",
-                                  style: GoogleFonts.lexend(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Tambah catatan",
+                                    style: GoogleFonts.lexend(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: textColor,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "Capture key takeaways for this lesson",
-                                  style: GoogleFonts.lexend(
-                                    fontSize: 12,
-                                    color: Colors.grey[500],
+                                  Text(
+                                    "Catat hal penting dari pelajaran ini",
+                                    style: GoogleFonts.lexend(
+                                      fontSize: 12,
+                                      color: Colors.grey[500],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        Container(
-                          width: 32,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey[100]!),
+                        const SizedBox(height: 12),
+                        TextField(
+                           controller: _noteController,
+                           maxLines: 4,
+                           decoration: InputDecoration(
+                             hintText: 'Tulis catatan Anda di sini...',
+                             filled: true,
+                             fillColor: Colors.grey[50], // surface-light
+                             border: OutlineInputBorder(
+                               borderRadius: BorderRadius.circular(8),
+                               borderSide: BorderSide.none,
+                             ),
+                             contentPadding: const EdgeInsets.all(12),
+                           ),
+                           style: GoogleFonts.lexend(fontSize: 13),
+                        ),
+                        const SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: ElevatedButton.icon(
+                             onPressed: _saveNote,
+                             icon: const Icon(Icons.save, size: 16),
+                             label: Text("Simpan", style: GoogleFonts.lexend(fontSize: 12)),
+                             style: ElevatedButton.styleFrom(
+                               backgroundColor: primaryColor,
+                               foregroundColor: Colors.white,
+                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                               minimumSize: Size.zero,
+                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                             ),
                           ),
-                          child: const Icon(Icons.add, color: Colors.grey, size: 20),
                         ),
                       ],
                     ),
@@ -291,7 +354,7 @@ class WebDesignLearningPage extends StatelessWidget {
                    Padding(
                      padding: const EdgeInsets.only(left: 4, bottom: 12),
                      child: Text(
-                        "MODULE 1: PENGENALAN WEB",
+                        "MODUL 1: PENGENALAN WEB",
                         style: GoogleFonts.lexend(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -305,7 +368,7 @@ class WebDesignLearningPage extends StatelessWidget {
                      iconColor: Colors.green,
                      iconBgColor: Colors.green[50]!,
                      title: "Apa itu Internet?",
-                     subtitle: "8 mins",
+                     subtitle: "8 mnt",
                      isCompleted: true,
                    ),
                    const SizedBox(height: 12),
@@ -313,8 +376,8 @@ class WebDesignLearningPage extends StatelessWidget {
                      icon: Icons.play_arrow,
                      iconColor: Colors.white,
                      iconBgColor: primaryColor,
-                     title: "Tools untuk Desain Web",
-                     subtitle: "12 mins • Playing",
+                     title: "Alat untuk Desain Web",
+                     subtitle: "12 mnt • Sedang Diputar",
                      isActive: true,
                      primaryColor: primaryColor,
                    ),
@@ -325,7 +388,7 @@ class WebDesignLearningPage extends StatelessWidget {
                    Padding(
                      padding: const EdgeInsets.only(left: 4, bottom: 12),
                      child: Text(
-                        "MODULE 2: HTML DASAR",
+                        "MODUL 2: DASAR HTML",
                         style: GoogleFonts.lexend(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -338,8 +401,8 @@ class WebDesignLearningPage extends StatelessWidget {
                      icon: Icons.lock,
                      iconColor: Colors.grey[400]!,
                      iconBgColor: Colors.grey[100]!,
-                     title: "Tag dan Element",
-                     subtitle: "15 mins",
+                     title: "Tag dan Elemen",
+                     subtitle: "15 mnt",
                      isLocked: true,
                    ),
                    const SizedBox(height: 12),
@@ -348,7 +411,7 @@ class WebDesignLearningPage extends StatelessWidget {
                      iconColor: Colors.grey[400]!,
                      iconBgColor: Colors.grey[100]!,
                      title: "Struktur Halaman",
-                     subtitle: "20 mins",
+                     subtitle: "20 mnt",
                      isLocked: true,
                    ),
                    const SizedBox(height: 12),
@@ -357,7 +420,7 @@ class WebDesignLearningPage extends StatelessWidget {
                      iconColor: Colors.grey[400]!,
                      iconBgColor: Colors.grey[100]!,
                      title: "Semantic HTML",
-                     subtitle: "18 mins",
+                     subtitle: "18 mnt",
                      isLocked: true,
                    ),
                 ],
@@ -395,9 +458,24 @@ class WebDesignLearningPage extends StatelessWidget {
           ],
           onTap: (index) {
              if (index == 0) {
-               Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 0)),
+                (route) => false,
+              );
+             } else if (index == 1) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 1)),
+                (route) => false,
+              );
+             } else if (index == 2) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 2)),
+                (route) => false,
+              );
              }
-             // Add logic for profile if needed
           },
         ),
       ),

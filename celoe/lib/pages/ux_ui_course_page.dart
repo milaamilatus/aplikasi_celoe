@@ -80,7 +80,7 @@ class _UxUiCoursePageState extends State<UxUiCoursePage> with SingleTickerProvid
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
                             image: NetworkImage(
-                                'https://lh3.googleusercontent.com/aida-public/AB6AXuCxnxs7NBcgoCOfydD_eJO6niLIMVPdd9YqEdCvlaGbz7DDUQaiuLuUfrPZ1qmXL9BE2XRcjfW2d-Ykfdg1-qyEa0W1q3M7jW_0FyS488ozhxWErdeBELPoDrzD9Du2P6VfhgJV7hMFCVhfez1YJW4-lxxyJ6h2Auykvvy9kBdVYB8rD3lw_gTqz2Wi0HMAed2B1C-T2qaMu8V9QJb9PMjorsEF_ceJm47-WJ9O2yNYU0OthCgnZRORJbwqkFY8ZTxIZcHlQGd3-lKK'),
+                                'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -111,7 +111,7 @@ class _UxUiCoursePageState extends State<UxUiCoursePage> with SingleTickerProvid
                                     const Icon(Icons.play_circle, color: Colors.white, size: 14),
                                     const SizedBox(width: 4),
                                     Text(
-                                      'Preview',
+                                      'Pratinjau',
                                       style: GoogleFonts.lexend(
                                         color: Colors.white,
                                         fontSize: 12,
@@ -139,7 +139,7 @@ class _UxUiCoursePageState extends State<UxUiCoursePage> with SingleTickerProvid
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              'DESIGN',
+                              'DESAIN',
                               style: GoogleFonts.lexend(
                                 color: primaryColor,
                                 fontSize: 10,
@@ -226,7 +226,7 @@ class _UxUiCoursePageState extends State<UxUiCoursePage> with SingleTickerProvid
                                     border: Border.all(color: Colors.white, width: 2),
                                     boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 2)],
                                     image: const DecorationImage(
-                                      image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuAy5dkvVu0To3OYJa-6LKS7Ih_dTUbNNN5TnL4Kr7nWt-JwAT2TdN0Ia3CrqvBUh7Z3DEhmpO4XQnZPVAwUyT2MeCpe2282Hma-NPyjrVFk2ySVEDHyuwHlt_2Y_KPZNJp05aZHtS4kbL0R9MCq8NJOsltzybvqKZp6lBpmJre8Mq_0xexBmEZp7r_-Et9fu3OVngqlLyIvF-xlmEyZs_rZ2NoMWJNxv1LyWkwNWb0-xUMNO_of1arKNbK8kG-ukuNH9WDd9ilKaj0z'),
+                                      image: NetworkImage('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

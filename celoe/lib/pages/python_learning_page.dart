@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PythonLearningPage extends StatefulWidget {
   const PythonLearningPage({super.key});
@@ -14,15 +16,123 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
   final PRIMARY_COLOR = const Color(0xFFec1313); // primary red
   final BACKGROUND_LIGHT = const Color(0xFFf8f6f6);
 
+  // Lesson Data
+  final List<Map<String, dynamic>> _lessons = [
+    {
+      'id': 1,
+      'title': '01. Selamat Datang di Python',
+      'duration': '4:20',
+      'videoId': '_uQrJ0TkZlc', // Python intro
+      'module': 'Modul 1: Pengenalan',
+      'isCompleted': true,
+      'isLocked': false
+    },
+    {
+      'id': 2,
+      'title': '02. Menyiapkan Lingkungan',
+      'duration': '10:45',
+      'videoId': 'YYXdXT2l-Gg', // Python Setup
+      'module': 'Modul 1: Pengenalan',
+      'isCompleted': true,
+      'isLocked': false
+    },
+    {
+      'id': 3,
+      'title': '03. Variabel & Tipe Data',
+      'duration': '12:30',
+      'videoId': 'kqtD5dpn9C8', // Variables
+      'module': 'Modul 2: Dasar-dasar',
+      'isCompleted': false,
+      'isLocked': false,
+      'desc': 'Memahami string, integer, dan float dalam Python. Belajar cara menyimpan dan memanipulasi data secara efisien.'
+    },
+    {
+      'id': 4,
+      'title': '04. List dan Tuple',
+      'duration': '15:00',
+      'videoId': 'PNptpf1r0Kw', // Lists
+      'module': 'Modul 2: Dasar-dasar',
+      'isCompleted': false,
+      'isLocked': false
+    },
+    {
+      'id': 5,
+      'title': '05. Dictionary',
+      'duration': '08:45',
+      'videoId': 'daefaZLgOww', // Dictionaries
+      'module': 'Modul 2: Dasar-dasar',
+      'isCompleted': false,
+      'isLocked': false
+    },
+  ];
+
+  late int _currentLessonId;
+  late String _currentVideoId;
+
+  // Notes Logic
+  final TextEditingController _noteController = TextEditingController();
+  late String _noteKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLessonId = 3; // Default to lesson 3
+    _updateCurrentLessonInfo();
+    _loadNote();
+  }
+
+  void _updateCurrentLessonInfo() {
+    final lesson = _lessons.firstWhere((l) => l['id'] == _currentLessonId);
+    _currentVideoId = lesson['videoId'];
+    _noteKey = 'note_python_lesson$_currentLessonId';
+    _loadNote(); // Reload notes for the new lesson
+  }
+
   Future<void> _launchUrl() async {
-    final Uri _url = Uri.parse('https://www.youtube.com/watch?v=kqtD5dpn9C8');
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+    final Uri _url = Uri.parse('https://www.youtube.com/watch?v=$_currentVideoId');
+    if (!await launchUrl(_url, mode: LaunchMode.externalApplication)) {
+       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not launch video')),
+        );
+       }
     }
   }
 
   @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _noteController.text = prefs.getString(_noteKey) ?? '';
+    });
+  }
+
+  Future<void> _saveNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_noteKey, _noteController.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Catatan tersimpan!')),
+      );
+    }
+  }
+
+  void _onLessonTap(int id) {
+    setState(() {
+      _currentLessonId = id;
+      _updateCurrentLessonInfo();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final currentLesson = _lessons.firstWhere((l) => l['id'] == _currentLessonId);
+
     return Scaffold(
       backgroundColor: BACKGROUND_LIGHT,
       appBar: AppBar(
@@ -39,7 +149,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
           ),
         ),
         title: Text(
-          'Python Programming',
+          'Pemrograman Python',
           style: GoogleFonts.lexend(
             color: TEXT_COLOR,
             fontSize: 18,
@@ -65,7 +175,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                       alignment: Alignment.center,
                       children: [
                         Image.network(
-                          'https://img.youtube.com/vi/kqtD5dpn9C8/maxresdefault.jpg',
+                          'https://img.youtube.com/vi/$_currentVideoId/maxresdefault.jpg',
                           width: double.infinity,
                           height: double.infinity,
                           fit: BoxFit.cover,
@@ -105,7 +215,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
-                                  'LESSON 3 OF 12',
+                                  'PELAJARAN $_currentLessonId DARI ${_lessons.length}',
                                   style: GoogleFonts.lexend(
                                     fontSize: 10, 
                                     fontWeight: FontWeight.bold,
@@ -116,7 +226,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '03. Variables & Data Types',
+                                currentLesson['title'],
                                 style: GoogleFonts.lexend(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -126,7 +236,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                'Understanding strings, integers, and floats in Python. Learn how to store and manipulate data efficiently.',
+                                currentLesson['desc'] ?? 'Pelajari lebih lanjut tentang topik ini dalam video pembelajaran.',
                                 style: GoogleFonts.lexend(
                                   fontSize: 14,
                                   color: Colors.grey[600], // slate-600
@@ -164,40 +274,71 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                      )
                    ]
                  ),
-                 child: Row(
+                 child: Column(
                    children: [
-                     Container(
-                       padding: const EdgeInsets.all(8),
-                       decoration: BoxDecoration(
-                         color: PRIMARY_COLOR.withOpacity(0.1),
-                         borderRadius: BorderRadius.circular(8),
-                       ),
-                       child: Icon(Icons.edit_note, color: PRIMARY_COLOR, size: 24),
-                     ),
-                     const SizedBox(width: 12),
-                     Expanded(
-                       child: Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           Text(
-                             'My Notes',
-                             style: GoogleFonts.lexend(
-                               fontSize: 14,
-                               fontWeight: FontWeight.bold,
-                               color: TEXT_COLOR,
-                             ),
+                     Row(
+                       children: [
+                         Container(
+                           padding: const EdgeInsets.all(8),
+                           decoration: BoxDecoration(
+                             color: PRIMARY_COLOR.withOpacity(0.1),
+                             borderRadius: BorderRadius.circular(8),
                            ),
-                           Text(
-                             'Tap to add personal notes for this lesson',
-                             style: GoogleFonts.lexend(
-                               fontSize: 12,
-                               color: Colors.grey[500], // slate-500
-                             ),
+                           child: Icon(Icons.edit_note, color: PRIMARY_COLOR, size: 24),
+                         ),
+                         const SizedBox(width: 12),
+                         Expanded(
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               Text(
+                                 'Catatan Saya',
+                                 style: GoogleFonts.lexend(
+                                   fontSize: 14,
+                                   fontWeight: FontWeight.bold,
+                                   color: TEXT_COLOR,
+                                 ),
+                               ),
+                               Text(
+                                 'Catatan disimpan secara lokal',
+                                 style: GoogleFonts.lexend(
+                                   fontSize: 12,
+                                   color: Colors.grey[500], // slate-500
+                                 ),
+                               ),
+                             ],
                            ),
-                         ],
+                         ),
+                       ],
+                     ),
+                     const SizedBox(height: 12),
+                     TextField(
+                       controller: _noteController,
+                       maxLines: 5,
+                       decoration: InputDecoration(
+                         hintText: 'Tulis catatan Anda di sini...',
+                         filled: true,
+                         fillColor: Colors.grey[50],
+                         border: OutlineInputBorder(
+                           borderRadius: BorderRadius.circular(8),
+                           borderSide: BorderSide.none,
+                         ),
+                       ),
+                       style: GoogleFonts.lexend(fontSize: 13),
+                     ),
+                     const SizedBox(height: 12),
+                     Align(
+                       alignment: Alignment.centerRight,
+                       child: ElevatedButton.icon(
+                         onPressed: _saveNote,
+                         icon: const Icon(Icons.save, size: 16),
+                         label: Text('Simpan', style: GoogleFonts.lexend()),
+                         style: ElevatedButton.styleFrom(
+                           backgroundColor: PRIMARY_COLOR,
+                           foregroundColor: Colors.white,
+                         ),
                        ),
                      ),
-                     Icon(Icons.chevron_right, color: Colors.grey[400]),
                    ],
                  ),
                ),
@@ -211,25 +352,18 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                child: Column(
                  children: [
                    _buildCompletedModule(
-                     "Module 1: Introduction", 
-                     "3 Lessons • 15 mins",
-                     [
-                       _buildLessonRow("01. Welcome to Python", "4:20", true),
-                       _buildLessonRow("02. Setting up Environment", "10:45", true),
-                     ]
+                     "Modul 1: Pengenalan", 
+                     "2 Pelajaran • 15 mnt",
+                     _lessons.where((l) => l['module'] == 'Modul 1: Pengenalan').toList()
                    ),
                    const SizedBox(height: 16),
                    _buildInProgressModule(
-                     "Module 2: Basics", 
-                     "4 Lessons • 45 mins",
-                      [
-                        _buildPlayingLessonRow("03. Variables & Data Types", "12:30"),
-                        _buildLessonRow("04. Lists and Tuples", "15:00", false, isLocked: false, isOpen: true),
-                        _buildLessonRow("05. Dictionaries", "08:45", false, isLocked: false, isOpen: true),
-                      ]
+                     "Modul 2: Dasar-dasar", 
+                     "3 Pelajaran • 45 mnt",
+                      _lessons.where((l) => l['module'] == 'Modul 2: Dasar-dasar').toList()
                    ),
                    const SizedBox(height: 16),
-                   _buildLockedModule("Module 3: Control Flow", "5 Lessons • 1h 10m"),
+                   _buildLockedModule("Modul 3: Alur Kontrol", "5 Pelajaran • 1 jam 10 mnt"),
                  ],
                ),
              ),
@@ -282,11 +416,27 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
 
   Widget _buildNavItem(IconData icon, String label, bool isActive) {
      return GestureDetector(
-       onTap: () {
-         if (label == 'Beranda') {
-           Navigator.popUntil(context, (route) => route.isFirst);
-         }
-       },
+        onTap: () {
+          if (label == 'Beranda') {
+             Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 0)),
+              (route) => false,
+            );
+          } else if (label == 'Kursus') {
+             Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 1)),
+              (route) => false,
+            );
+          } else if (label == 'Profil') {
+             Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 2)),
+              (route) => false,
+            );
+          }
+        },
        child: Column(
          mainAxisSize: MainAxisSize.min,
          children: [
@@ -305,7 +455,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
      );
   }
 
-  Widget _buildCompletedModule(String title, String subtitle, List<Widget> children) {
+  Widget _buildCompletedModule(String title, String subtitle, List<Map<String, dynamic>> lessons) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -315,7 +465,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          shape: const Border(), // Remove default border
+          shape: const Border(),
           tilePadding: const EdgeInsets.all(16),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +474,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                 children: [
                   const Icon(Icons.check_circle, size: 14, color: Colors.green),
                   const SizedBox(width: 4),
-                  Text("COMPLETED", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green)),
+                  Text("SELESAI", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green)),
                 ],
               ),
               const SizedBox(height: 4),
@@ -342,7 +492,9 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
           children: [
              Container(
                color: const Color(0xFFf8fafc), // slate-50
-               child: Column(children: children)
+               child: Column(
+                 children: lessons.map((l) => _buildLessonRow(l)).toList(),
+               )
              )
           ],
         ),
@@ -350,7 +502,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
     );
   }
 
-  Widget _buildInProgressModule(String title, String subtitle, List<Widget> children) {
+  Widget _buildInProgressModule(String title, String subtitle, List<Map<String, dynamic>> lessons) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -378,7 +530,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                 children: [
                   Icon(Icons.play_circle_filled, size: 14, color: PRIMARY_COLOR),
                   const SizedBox(width: 4),
-                  Text("IN PROGRESS", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: PRIMARY_COLOR)),
+                  Text("SEDANG BERJALAN", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: PRIMARY_COLOR)),
                 ],
               ),
               const SizedBox(height: 4),
@@ -393,7 +545,12 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
             ],
           ),
           subtitle: Text(subtitle, style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
-          children: children,
+          children: lessons.map((l) {
+            if (l['id'] == _currentLessonId) {
+              return _buildPlayingLessonRow(l);
+            }
+            return _buildLessonRow(l);
+          }).toList(),
         ),
       ),
     );
@@ -420,7 +577,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                   children: [
                     const Icon(Icons.lock, size: 14, color: Colors.grey),
                     const SizedBox(width: 4),
-                    Text("LOCKED", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                    Text("TERKUNCI", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -441,7 +598,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                  width: double.infinity,
                  color: const Color(0xFFf8fafc),
                  child: Text(
-                   "Complete previous modules to unlock", 
+                   "Selesaikan modul sebelumnya untuk membuka", 
                    textAlign: TextAlign.center,
                    style: GoogleFonts.lexend(fontSize: 14, color: Colors.grey[500], fontStyle: FontStyle.italic)
                  ),
@@ -453,51 +610,53 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
      );
   }
 
-  Widget _buildLessonRow(String title, String duration, bool isCompleted, {bool isLocked = true, bool isOpen = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-           if (isCompleted)
-              const Icon(Icons.check_circle, color: Colors.green, size: 20)
-           else if (isOpen)
-              CircleAvatar(
-                radius: 12, 
-                backgroundColor: Colors.grey[100], 
-                child: Text("0${title.substring(0,1)}", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey))
-              ) // Simplified number logic for demo
-           else
-              CircleAvatar(
-                radius: 12, 
-                backgroundColor: Colors.grey[100], 
-                child: Text("0${title.substring(0,1)}", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey))
-              ),
-              
-           const SizedBox(width: 12),
-           Expanded(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Text(
-                   title, 
-                   style: GoogleFonts.lexend(
-                     fontSize: 14, 
-                     fontWeight: FontWeight.w500, 
-                     color: Colors.grey[700]
-                   )
-                 ),
-                 Text(duration, style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
-               ],
-             )
-           ),
-           if (isOpen)
-             Icon(Icons.lock_open, size: 20, color: Colors.grey[300]),
-        ],
+  Widget _buildLessonRow(Map<String, dynamic> lesson) {
+    bool isCompleted = lesson['isCompleted'] ?? false;
+    bool isOpen = !isCompleted; 
+
+    return InkWell(
+      onTap: () => _onLessonTap(lesson['id']),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+             if (isCompleted)
+                const Icon(Icons.check_circle, color: Colors.green, size: 20)
+             else
+                CircleAvatar(
+                  radius: 12, 
+                  backgroundColor: Colors.grey[100], 
+                  child: Text("0${lesson['title'].substring(0,1)}", style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey))
+                ),
+             
+             const SizedBox(width: 12),
+             Expanded(
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text(
+                     lesson['title'], 
+                     style: GoogleFonts.lexend(
+                       fontSize: 14, 
+                       fontWeight: FontWeight.w500, 
+                       color: Colors.grey[700]
+                     )
+                   ),
+                   Text(lesson['duration'], style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
+                 ],
+               )
+             ),
+             if (isOpen)
+               Icon(Icons.play_circle_outline, size: 20, color: Colors.grey[400])
+             else if (isCompleted)
+               Icon(Icons.check, size: 20, color: Colors.green.withOpacity(0.5))
+          ],
+        ),
       ),
     );
   }
   
-  Widget _buildPlayingLessonRow(String title, String duration) {
+  Widget _buildPlayingLessonRow(Map<String, dynamic> lesson) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -518,7 +677,7 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  Text(
-                   title, 
+                   lesson['title'], 
                    style: GoogleFonts.lexend(
                      fontSize: 14, 
                      fontWeight: FontWeight.bold, 
@@ -528,8 +687,8 @@ class _PythonLearningPageState extends State<PythonLearningPage> {
                  RichText(
                    text: TextSpan(
                      children: [
-                       TextSpan(text: "$duration • ", style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
-                       TextSpan(text: "Playing", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: PRIMARY_COLOR)),
+                       TextSpan(text: "${lesson['duration']} • ", style: GoogleFonts.lexend(fontSize: 12, color: Colors.grey[500])),
+                       TextSpan(text: "Sedang Diputar", style: GoogleFonts.lexend(fontSize: 12, fontWeight: FontWeight.bold, color: PRIMARY_COLOR)),
                      ]
                    )
                  )

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DataScienceLearningPage extends StatefulWidget {
   const DataScienceLearningPage({super.key});
@@ -17,6 +19,39 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
     final Uri _url = Uri.parse('https://www.youtube.com/watch?v=-ETQ97mXXF0');
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
+    }
+  }
+
+  // Notes Logic
+  final TextEditingController _noteController = TextEditingController();
+  final String _noteKey = 'note_datascience_modul1';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNote();
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _noteController.text = prefs.getString(_noteKey) ?? '';
+    });
+  }
+
+  Future<void> _saveNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_noteKey, _noteController.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Catatan tersimpan!')),
+      );
     }
   }
 
@@ -167,7 +202,7 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
                                 ],
                               ),
                               TextButton(
-                                onPressed: (){}, 
+                                onPressed: _saveNote, 
                                 style: TextButton.styleFrom(
                                   padding: EdgeInsets.zero,
                                   minimumSize: Size(0,0),
@@ -179,6 +214,7 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
                          ),
                          const SizedBox(height: 12),
                          TextField(
+                           controller: _noteController,
                            maxLines: 3,
                            decoration: InputDecoration(
                              hintText: 'Tulis poin penting dari video ini...',
@@ -201,7 +237,11 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
                   
                   // Tandai Selesai Button
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                       ScaffoldMessenger.of(context).showSnackBar(
+                         const SnackBar(content: Text('Pelajaran ditandai sebagai selesai!')),
+                       );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PRIMARY_COLOR,
                       foregroundColor: Colors.white,
@@ -267,18 +307,18 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
             ),
              _buildModuleItem(
                title: 'Statistik Dasar untuk Data', 
-               metadata: '15:30 mins', 
+               metadata: '15:30 mnt', 
                state: LessonState.open,
                order: '02'
             ),
              _buildModuleItem(
                title: 'Machine Learning 101', 
-               metadata: '22:15 mins', 
+               metadata: '22:15 mnt', 
                state: LessonState.locked
             ),
              _buildModuleItem(
-               title: 'Deep Learning Introduction', 
-               metadata: '18:45 mins', 
+               title: 'Pengenalan Deep Learning', 
+               metadata: '18:45 mnt', 
                state: LessonState.locked
             ),
             
@@ -312,11 +352,27 @@ class _DataScienceLearningPageState extends State<DataScienceLearningPage> {
             label: 'Profil',
           ),
         ],
-        onTap: (index) {
-          if (index == 0) {
-             Navigator.popUntil(context, (route) => route.isFirst);
-          }
-        },
+          onTap: (index) {
+             if (index == 0) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 0)),
+                (route) => false,
+              );
+             } else if (index == 1) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 1)),
+                (route) => false,
+              );
+             } else if (index == 2) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 2)),
+                (route) => false,
+              );
+             }
+          },
       ),
     );
   }

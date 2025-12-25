@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UxUiLearningPage extends StatefulWidget {
   const UxUiLearningPage({super.key});
@@ -17,6 +19,39 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
     final Uri _url = Uri.parse('https://www.youtube.com/watch?v=c9Wg6Cb_YlU');
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
+    }
+  }
+
+  // Notes Logic
+  final TextEditingController _noteController = TextEditingController();
+  final String _noteKey = 'note_uxui_lesson2';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadNote();
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _noteController.text = prefs.getString(_noteKey) ?? '';
+    });
+  }
+
+  Future<void> _saveNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_noteKey, _noteController.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Catatan tersimpan!')),
+      );
     }
   }
 
@@ -109,7 +144,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'MODULE 1 • LESSON 2',
+                    'MODUL 1 • PELAJARAN 2',
                     style: GoogleFonts.lexend(
                       color: PRIMARY_COLOR,
                       fontSize: 12,
@@ -119,7 +154,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'What is User Experience?',
+                    'Apa itu User Experience?',
                     style: GoogleFonts.lexend(
                       color: TEXT_COLOR,
                       fontSize: 20,
@@ -129,7 +164,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'In this lesson, we will cover the fundamental differences between UI and UX, and why understanding the user journey is crucial for product success.',
+                    'Dalam pelajaran ini, kita akan membahas perbedaan mendasar antara UI dan UX, dan mengapa memahami perjalanan pengguna sangat penting untuk keberhasilan produk.',
                     style: GoogleFonts.lexend(
                       color: Colors.grey[600], // neutral-500
                       fontSize: 14,
@@ -150,49 +185,91 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.red[50],
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: Colors.red[100]!),
+                      boxShadow: [
+                         BoxShadow(
+                          color: Colors.red.withOpacity(0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Container(
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.edit_note,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Take Notes',
-                                style: GoogleFonts.lexend(
-                                  color: TEXT_COLOR,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              Text(
-                                'Add a note at current time',
-                                style: GoogleFonts.lexend(
-                                  color: Colors.grey[500],
-                                  fontSize: 12,
-                                ),
+                              child: const Icon(
+                                Icons.edit_note,
+                                color: Colors.white,
+                                size: 18,
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Buat Catatan',
+                                    style: GoogleFonts.lexend(
+                                      color: TEXT_COLOR,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Catatan disimpan secara loakl',
+                                    style: GoogleFonts.lexend(
+                                      color: Colors.grey[500],
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        Icon(Icons.add_circle, color: PRIMARY_COLOR),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _noteController,
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                            hintText: 'Tulis ide atau poin penting...',
+                            filled: true,
+                            fillColor: Colors.grey[50], // neutral-50
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.all(12),
+                          ),
+                          style: GoogleFonts.lexend(fontSize: 13),
+                        ),
+                        const SizedBox(height: 8),
+                         Align(
+                           alignment: Alignment.centerRight,
+                           child: ElevatedButton.icon(
+                             onPressed: _saveNote,
+                             icon: const Icon(Icons.save, size: 16),
+                             label: Text('Simpan', style: GoogleFonts.lexend(fontSize: 12)),
+                             style: ElevatedButton.styleFrom(
+                               backgroundColor: PRIMARY_COLOR,
+                               foregroundColor: Colors.white,
+                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                               minimumSize: Size.zero,
+                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                             ),
+                           ),
+                         ),
                       ],
                     ),
                   ),
@@ -214,7 +291,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                           decoration: BoxDecoration(
                             color: Colors.grey[200],
                             shape: BoxShape.circle,
-                          ),
+                            ),
                           child: Icon(
                             Icons.folder_open,
                             color: Colors.grey[600],
@@ -227,7 +304,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Lesson Materials',
+                                'Materi Pelajaran',
                                 style: GoogleFonts.lexend(
                                   color: TEXT_COLOR,
                                   fontSize: 14,
@@ -235,7 +312,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                                 ),
                               ),
                               Text(
-                                'Slides & exercise files',
+                                'Slide & file latihan',
                                 style: GoogleFonts.lexend(
                                   color: Colors.grey[500],
                                   fontSize: 12,
@@ -271,7 +348,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Course Content',
+                    'Konten Kursus',
                     style: GoogleFonts.lexend(
                       color: TEXT_COLOR,
                       fontSize: 18,
@@ -279,7 +356,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                     ),
                   ),
                   Text(
-                    '2/12 Completed',
+                    '2/12 Selesai',
                     style: GoogleFonts.lexend(
                       color: Colors.grey[500],
                       fontSize: 12,
@@ -291,34 +368,34 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
             ),
 
             // Modules
-            _buildModuleHeader('Module 1: Foundations', true),
+            _buildModuleHeader('Modul 1: Fondasi', true),
             _buildLessonItem(
-              '01. Introduction to the Course',
-              '5 mins',
+              '01. Pengantar Kursus',
+              '5 mnt',
               LessonState.completed,
               false,
             ),
             _buildLessonItem(
-              '02. What is User Experience?',
-              '12 mins',
+              '02. Apa itu User Experience?',
+              '12 mnt',
               LessonState.playing,
               true,
             ),
             _buildLessonItem(
-              '03. Design Thinking Process',
-              '18 mins',
+              '03. Proses Design Thinking',
+              '18 mnt',
               LessonState.locked,
               false,
             ),
              _buildLessonItem(
-              '04. Understanding Users',
-              '15 mins',
+              '04. Memahami Pengguna',
+              '15 mnt',
               LessonState.locked,
               false,
             ),
             
-            _buildModuleHeader('Module 2: Visual Design', false),
-            _buildModuleHeader('Module 3: Prototyping', false),
+            _buildModuleHeader('Modul 2: Desain Visual', false),
+            _buildModuleHeader('Modul 3: Pembuatan Prototipe', false),
             
              const SizedBox(height: 48),
           ],
@@ -350,11 +427,27 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
             label: 'Profil',
           ),
         ],
-        onTap: (index) {
-          if (index == 0) {
-             Navigator.popUntil(context, (route) => route.isFirst);
-          }
-        },
+          onTap: (index) {
+             if (index == 0) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 0)),
+                (route) => false,
+              );
+             } else if (index == 1) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 1)),
+                (route) => false,
+              );
+             } else if (index == 2) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 2)),
+                (route) => false,
+              );
+             }
+          },
       ),
     );
   }
@@ -468,7 +561,7 @@ class _UxUiLearningPageState extends State<UxUiLearningPage> {
                       ),
                       if (state == LessonState.playing)
                         Text(
-                          ' • Playing',
+                          ' • Sedang Diputar',
                           style: GoogleFonts.lexend(
                              color: primaryColor,
                              fontSize: 12,

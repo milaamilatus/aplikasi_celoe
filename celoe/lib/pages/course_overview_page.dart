@@ -143,7 +143,7 @@ class _CourseOverviewPageState extends State<CourseOverviewPage> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      'Best Seller',
+                                      'Terlaris',
                                       style: GoogleFonts.lexend(
                                         color: Colors.white,
                                         fontSize: 12,

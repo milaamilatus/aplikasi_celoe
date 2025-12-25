@@ -503,7 +503,7 @@ class _DigitalMarketingCoursePageState extends State<DigitalMarketingCoursePage>
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Start Course',
+                        'Mulai Kursus',
                         style: GoogleFonts.lexend(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

@@ -1,14 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class DigitalMarketingLearningPage extends StatelessWidget {
+class DigitalMarketingLearningPage extends StatefulWidget {
   const DigitalMarketingLearningPage({super.key});
+
+  @override
+  State<DigitalMarketingLearningPage> createState() => _DigitalMarketingLearningPageState();
+}
+
+class _DigitalMarketingLearningPageState extends State<DigitalMarketingLearningPage> {
+  final TextEditingController _noteController = TextEditingController();
+  late String _noteKey;
+  
+  // Lesson Data
+  final List<Map<String, dynamic>> _lessons = [
+    {
+      'id': 1,
+      'title': '1.1 Pengantar SEO',
+      'duration': '12 min',
+      'videoId': 'DvwS7cV9GmQ', // Intro SEO
+      'isCompleted': false,
+      'isLocked': false,
+      'subtitle': 'Sedang diputar'
+    },
+    {
+      'id': 2,
+      'title': '1.2 Keyword Research',
+      'duration': '10 min',
+      'videoId': '0rjIJj6Wj_U', // Keyword Research
+      'isCompleted': true,
+      'isLocked': false,
+      'subtitle': 'Selesai'
+    },
+    {
+      'id': 3,
+      'title': '1.3 On-Page Optimization',
+      'duration': '15 min',
+      'videoId': 'z_8A_-XyqD0', // On Page SEO
+      'isCompleted': false,
+      'isLocked': true,
+      'subtitle': 'Terkunci'
+    },
+     {
+      'id': 4,
+      'title': '2.1 Intro to Instagram Ads',
+      'duration': '8 min',
+      'videoId': 'H2pL4_W_e4Q', // IG Ads
+      'isCompleted': false,
+      'isLocked': true,
+      'subtitle': 'Terkunci'
+    },
+  ];
+
+  late int _currentLessonId;
+  late String _currentVideoId;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentLessonId = 1;
+    _updateCurrentLessonInfo();
+    _loadNote();
+  }
+
+  void _updateCurrentLessonInfo() {
+    final lesson = _lessons.firstWhere((l) => l['id'] == _currentLessonId);
+    _currentVideoId = lesson['videoId'];
+    _noteKey = 'note_digital_marketing_lesson$_currentLessonId';
+    _loadNote();
+  }
+  
+  void _onLessonTap(int id) {
+    // Only allow tapping if not locked (simulate unlocking logic if needed, but for now simple check)
+    final lesson = _lessons.firstWhere((l) => l['id'] == id);
+    if (!lesson['isLocked']) {
+      setState(() {
+        _currentLessonId = id;
+        _updateCurrentLessonInfo();
+      });
+    } else {
+       ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Selesaikan pelajaran sebelumnya untuk membuka.')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _noteController.text = prefs.getString(_noteKey) ?? '';
+    });
+  }
+
+  Future<void> _saveNote() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_noteKey, _noteController.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Catatan tersimpan!')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFFec1313);
-    const Color textColor = Color(0xFF1b0d0d); // Using the dark text color from previous pages for consistency or slate-900 equivalent
+    const Color textColor = Color(0xFF1b0d0d); 
+    
+    final currentLesson = _lessons.firstWhere((l) => l['id'] == _currentLessonId);
 
     return Scaffold(
       backgroundColor: const Color(0xFFf8f6f6), // background-light
@@ -34,8 +142,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
          padding: const EdgeInsets.only(bottom: 80),
         child: Column(
           children: [
-            // Video Section (Sticky-ish in HTML, but scrollable here for simplicity or we can use Slivers if requested strictly)
-            // HTML says sticky top-0, let's keep it simple first as part of body.
+            // Video Section
              Container(
                color: Colors.black,
                width: double.infinity,
@@ -43,7 +150,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                  aspectRatio: 16 / 9,
                  child: GestureDetector(
                     onTap: () async {
-                      final Uri url = Uri.parse('https://www.youtube.com/watch?v=DvwS7cV9GmQ');
+                      final Uri url = Uri.parse('https://www.youtube.com/watch?v=$_currentVideoId');
                       if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
                         if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +163,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                      alignment: Alignment.center,
                      children: [
                        Image.network(
-                         'https://img.youtube.com/vi/DvwS7cV9GmQ/maxresdefault.jpg',
+                         'https://img.youtube.com/vi/$_currentVideoId/maxresdefault.jpg',
                          fit: BoxFit.cover,
                          width: double.infinity,
                          height: double.infinity,
@@ -88,7 +195,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
                            Text(
-                             "Modul 1 • Pelajaran 1",
+                             "Modul 1 • Pelajaran $_currentLessonId",
                              style: GoogleFonts.lexend(
                                color: primaryColor,
                                fontSize: 12,
@@ -98,7 +205,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                            ),
                            const SizedBox(height: 4),
                            Text(
-                             "Pengantar SEO",
+                             currentLesson['title'],
                              style: GoogleFonts.lexend(
                                color: textColor,
                                fontSize: 24,
@@ -183,6 +290,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                          ),
                          const SizedBox(height: 12),
                          TextField(
+                           controller: _noteController,
                            maxLines: 4,
                            decoration: InputDecoration(
                              filled: true,
@@ -201,7 +309,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                          Align(
                            alignment: Alignment.centerRight,
                            child: ElevatedButton.icon(
-                             onPressed: () {},
+                             onPressed: _saveNote,
                              icon: const Icon(Icons.save, size: 14),
                              label: Text("Simpan", style: GoogleFonts.lexend(fontSize: 12)),
                              style: ElevatedButton.styleFrom(
@@ -220,7 +328,11 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                    SizedBox(
                      width: double.infinity,
                      child: ElevatedButton(
-                       onPressed: () {},
+                       onPressed: () {
+                           ScaffoldMessenger.of(context).showSnackBar(
+                             const SnackBar(content: Text('Pelajaran ditandai sebagai selesai!')),
+                           );
+                         },
                        style: ElevatedButton.styleFrom(
                          backgroundColor: primaryColor,
                          foregroundColor: Colors.white,
@@ -273,29 +385,20 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                    ),
                    const SizedBox(height: 12),
                    
-                   // 1.1 Playing
-                   _buildMaterialItem(
-                     title: "1.1 Pengantar SEO",
-                     subtitle: "Sedang diputar • 12 min",
-                     isPlaying: true,
-                     primaryColor: primaryColor,
-                   ),
-                   const SizedBox(height: 12),
-                   // 1.2 Done
-                   _buildMaterialItem(
-                     title: "1.2 Keyword Research",
-                     subtitle: "Selesai • 10 min",
-                     isDone: true,
-                     primaryColor: primaryColor,
-                   ),
-                   const SizedBox(height: 12),
-                   // 1.3 Locked
-                   _buildMaterialItem(
-                     title: "1.3 On-Page Optimization",
-                     subtitle: "Terkunci • 15 min",
-                     isLocked: true,
-                     primaryColor: primaryColor,
-                   ),
+                   ..._lessons.take(3).map((l) => Padding(
+                     padding: const EdgeInsets.only(bottom: 12),
+                     child: _buildMaterialItem(
+                       id: l['id'],
+                       title: l['title'],
+                       subtitle: l['id'] == _currentLessonId 
+                          ? 'Sedang diputar • ${l['duration']}' 
+                          : '${l['subtitle']} • ${l['duration']}',
+                       isPlaying: l['id'] == _currentLessonId,
+                       isDone: l['isCompleted'],
+                       isLocked: l['isLocked'],
+                       primaryColor: primaryColor,
+                     ),
+                   )),
 
                    const SizedBox(height: 20),
                    Padding(
@@ -311,13 +414,18 @@ class DigitalMarketingLearningPage extends StatelessWidget {
                      ),
                    ),
                    const SizedBox(height: 12),
-                   // 2.1 Locked
-                    _buildMaterialItem(
-                     title: "2.1 Intro to Instagram Ads",
-                     subtitle: "Terkunci • 8 min",
-                     isLocked: true,
-                     primaryColor: primaryColor,
-                   ),
+                   ..._lessons.skip(3).map((l) => Padding(
+                     padding: const EdgeInsets.only(bottom: 12),
+                     child: _buildMaterialItem(
+                       id: l['id'],
+                       title: l['title'],
+                       subtitle: '${l['subtitle']} • ${l['duration']}',
+                       isPlaying: l['id'] == _currentLessonId,
+                       isDone: l['isCompleted'],
+                       isLocked: l['isLocked'],
+                       primaryColor: primaryColor,
+                     ),
+                   )),
                  ],
                ),
              ),
@@ -352,10 +460,25 @@ class DigitalMarketingLearningPage extends StatelessWidget {
             ),
           ],
           onTap: (index) {
-            if (index == 0) {
-               Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+             if (index == 0) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 0)),
+                (route) => false,
+              );
+             } else if (index == 1) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 1)),
+                (route) => false,
+              );
+             } else if (index == 2) {
+               Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage(initialIndex: 2)),
+                (route) => false,
+              );
              }
-             // Add logic for profile if needed
           },
         ),
       ),
@@ -363,6 +486,7 @@ class DigitalMarketingLearningPage extends StatelessWidget {
   }
 
   Widget _buildMaterialItem({
+    required int id,
     required String title,
     required String subtitle,
     bool isPlaying = false,
@@ -390,72 +514,80 @@ class DigitalMarketingLearningPage extends StatelessWidget {
     } else if (isLocked) {
       bgColor = Colors.white.withOpacity(0.6); // Slightly faded
     }
+    
+    // Unlock icon logic if not locked and not playing/done
+    if (!isLocked && !isPlaying && !isDone) {
+        icon = Icons.play_circle_outline;
+    }
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: borderColor),
-        boxShadow: isPlaying ? [
-          BoxShadow(
-            color: primaryColor.withOpacity(0.05),
-            blurRadius: 4,
-          )
-        ] : null,
-      ),
-      child: Row(
-        children: [
-           // Decoration for playing item
-           if (isPlaying)
-           Container(
-             width: 6,
-             height: 40, // Height of content approx
-             decoration:BoxDecoration(
-               color: primaryColor,
-               borderRadius: BorderRadius.circular(2),
+    return GestureDetector(
+      onTap: () => _onLessonTap(id),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: borderColor),
+          boxShadow: isPlaying ? [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.05),
+              blurRadius: 4,
+            )
+          ] : null,
+        ),
+        child: Row(
+          children: [
+             // Decoration for playing item
+             if (isPlaying)
+             Container(
+               width: 6,
+               height: 40, // Height of content approx
+               decoration:BoxDecoration(
+                 color: primaryColor,
+                 borderRadius: BorderRadius.circular(2),
+               ),
+               margin: const EdgeInsets.only(right: 12),
              ),
-             margin: const EdgeInsets.only(right: 12),
-           ),
-           
-           Container(
-             width: 40,
-             height: 40,
-             decoration: BoxDecoration(
-               color: iconBgColor,
-               shape: BoxShape.circle,
-               boxShadow: isPlaying ? [BoxShadow(color: primaryColor.withOpacity(0.3), blurRadius: 8)] : null,
+             
+             Container(
+               width: 40,
+               height: 40,
+               decoration: BoxDecoration(
+                 color: iconBgColor,
+                 shape: BoxShape.circle,
+                 boxShadow: isPlaying ? [BoxShadow(color: primaryColor.withOpacity(0.3), blurRadius: 8)] : null,
+               ),
+               child: Icon(icon, color: iconColor, size: 20),
              ),
-             child: Icon(icon, color: iconColor, size: 20),
-           ),
-           const SizedBox(width: 16),
-           Expanded(
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 Text(
-                   title,
-                   style: GoogleFonts.lexend(
-                     fontSize: 14,
-                     fontWeight: isPlaying ? FontWeight.bold : FontWeight.w500,
-                     color: isLocked ? Colors.grey[500] : const Color(0xFF1b0d0d),
+             const SizedBox(width: 16),
+             Expanded(
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Text(
+                     title,
+                     style: GoogleFonts.lexend(
+                       fontSize: 14,
+                       fontWeight: isPlaying ? FontWeight.bold : FontWeight.w500,
+                       color: isLocked ? Colors.grey[500] : const Color(0xFF1b0d0d),
+                     ),
+                     maxLines: 1,
+                     overflow: TextOverflow.ellipsis,
                    ),
-                   maxLines: 1,
-                   overflow: TextOverflow.ellipsis,
-                 ),
-                 const SizedBox(height: 2),
-                 Text(
-                   subtitle,
-                   style: GoogleFonts.lexend(
-                     fontSize: 12,
-                     color: isPlaying ? primaryColor : Colors.grey[400],
-                     fontWeight: isPlaying ? FontWeight.w500 : FontWeight.normal,
+                   const SizedBox(height: 2),
+                   Text(
+                     subtitle,
+                     style: GoogleFonts.lexend(
+                       fontSize: 12,
+                       color: isPlaying ? primaryColor : Colors.grey[400],
+                       fontWeight: isPlaying ? FontWeight.w500 : FontWeight.normal,
+                     ),
                    ),
-                 ),
-               ],
+                 ],
+               ),
              ),
-           ),
-        ],
+          ],
+        ),
       ),
     );
   }

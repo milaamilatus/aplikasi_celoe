@@ -9,7 +9,8 @@ import 'data_science_course_page.dart';
 import 'python_course_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final int initialIndex;
+  const HomePage({super.key, this.initialIndex = 0});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,7 +18,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -259,8 +266,8 @@ class _HomePageState extends State<HomePage> {
                                ),
                                padding: const EdgeInsets.all(12),
                                child: Image.network(
-                                 'https://lh3.googleusercontent.com/aida-public/AB6AXuCZ1ySn4bVQ3ntaYBPPpJulIy5bwhq3W7ZjVya_ZoIXs-cL44B-HkuEw2gfa88u_AM0bjiOa-aRuVTeE5I5pWAcybS3QdnyNIqO5igapEQfjtHe_-xHr2Evrw-X91YtQaSONfG7kEADrVyUwRW69k1PwX5zXzmKnwbAtKZ3jX4a9SEYfnbcHWDj38-HdizAnu9DrYnCkk92c6vtz3UCp-wsdhv-2CoZnru8g8JH2gTuZNbtnkh9ahLCbdLf4ZKqN6zcyLRIjRcvl21w',
-                                 fit: BoxFit.contain,
+                                 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                                 fit: BoxFit.cover,
                                  opacity: const AlwaysStoppedAnimation(0.9),
                                ),
                              ),

@@ -87,7 +87,7 @@ class _DataScienceCoursePageState extends State<DataScienceCoursePage> {
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
                             image: NetworkImage(
-                                'https://lh3.googleusercontent.com/aida-public/AB6AXuAzylX4DFV1-TuA8MtOl4X4H8aNIHlu24VLaJ-IFdibJXcsccnL5lCOJRFyOvCj1cVWF5EVZ9z9c2H4Fp4_Bg9My1GP-Zj-b4GNzGz8Yx8PjswlELRlI4BsZ4CQseishFZE8JEtk-QAbbFsfUOYJS7Y9GcBZx0py-VyPfckuofgLaUKVS7PKzgdMi7DiphdKM9h9thjs7va1zMj7JYTrV8Bd78kdvy_ZFlZoeZj06jAmy4mR9kv32LjsAawZ6joR2KCbYVwHm8CgWyO'),
+                                'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -129,7 +129,7 @@ class _DataScienceCoursePageState extends State<DataScienceCoursePage> {
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
-                                    "(120 Reviews)",
+                                    "(120 Ulasan)",
                                     style: GoogleFonts.lexend(color: Colors.white.withOpacity(0.9), fontSize: 14),
                                   ),
                                 ],
@@ -211,7 +211,7 @@ class _DataScienceCoursePageState extends State<DataScienceCoursePage> {
                       
                       _buildModuleItem(1, "Pengenalan Data Science", "10 Menit • Video", Icons.play_circle, primaryColor),
                       const SizedBox(height: 12),
-                      _buildModuleItem(2, "Dasar Pemrograman Python", "45 Menit • Quiz & Lab", Icons.lock, Colors.grey),
+                      _buildModuleItem(2, "Dasar Pemrograman Python", "45 Menit • Kuis & Lab", Icons.lock, Colors.grey),
                       const SizedBox(height: 12),
                       _buildModuleItem(3, "Visualisasi Data", "30 Menit • Proyek", Icons.lock, Colors.grey),
 
