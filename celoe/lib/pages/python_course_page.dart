@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'python_learning_page.dart';
 
 class PythonCoursePage extends StatelessWidget {
   const PythonCoursePage({super.key});
@@ -309,7 +310,12 @@ class PythonCoursePage extends StatelessWidget {
                 ),
               ),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const PythonLearningPage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
