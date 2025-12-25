@@ -4,6 +4,7 @@ import 'courses_page.dart';
 import 'profile_page.dart';
 import 'course_overview_page.dart';
 import 'digital_marketing_course_page.dart';
+import 'ux_ui_course_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -365,6 +366,11 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const DigitalMarketingCoursePage()),
+          );
+        } else if (title == 'UX/UI Pemula') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UxUiCoursePage()),
           );
         }
       },
