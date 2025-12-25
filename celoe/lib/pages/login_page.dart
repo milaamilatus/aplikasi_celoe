@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/gestures.dart';
 import 'dart:ui';
 import 'registration_page.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -260,9 +261,15 @@ class _LoginPageState extends State<LoginPage> {
                                      ),
                                    ),
                                    
+
                                    // Sign In Button
                                    ElevatedButton(
-                                     onPressed: () {},
+                                     onPressed: () {
+                                       Navigator.pushReplacement(
+                                         context,
+                                         MaterialPageRoute(builder: (context) => const HomePage()),
+                                       );
+                                     },
                                      style: ElevatedButton.styleFrom(
                                        backgroundColor: primaryColor,
                                        foregroundColor: Colors.white,

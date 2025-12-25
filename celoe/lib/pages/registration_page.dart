@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'home_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -93,7 +94,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
                          Text(
-                           'Selamat datang,\nAmilatus!',
+                           'Selamat datang!',
                            style: GoogleFonts.poppins(
                              fontSize: 24,
                              fontWeight: FontWeight.bold,
@@ -162,7 +163,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                          SizedBox(
                            width: double.infinity,
                            child: ElevatedButton(
-                             onPressed: () {},
+                             onPressed: () {
+                               Navigator.pushReplacement(
+                                 context,
+                                 MaterialPageRoute(builder: (context) => const HomePage()),
+                               );
+                             },
                              style: ElevatedButton.styleFrom(
                                backgroundColor: primaryColor,
                                foregroundColor: Colors.white,
