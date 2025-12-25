@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'ux_ui_learning_page.dart';
 
 class UxUiCoursePage extends StatefulWidget {
   const UxUiCoursePage({super.key});
@@ -448,7 +449,12 @@ class _UxUiCoursePageState extends State<UxUiCoursePage> with SingleTickerProvid
                ),
                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 24),
                child: ElevatedButton(
-                 onPressed: () {},
+                 onPressed: () {
+                   Navigator.push(
+                     context,
+                     MaterialPageRoute(builder: (context) => const UxUiLearningPage()),
+                   );
+                 },
                  style: ElevatedButton.styleFrom(
                    backgroundColor: primaryColor,
                    foregroundColor: Colors.white,
