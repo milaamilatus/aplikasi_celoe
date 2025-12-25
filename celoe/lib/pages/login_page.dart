@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/gestures.dart';
 import 'dart:ui';
+import 'registration_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -162,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                  crossAxisAlignment: CrossAxisAlignment.stretch,
                                  children: [
                                    Text(
-                                     'Welcome Back!',
+                                     'Welcome!',
                                      textAlign: TextAlign.center,
                                      style: GoogleFonts.plusJakartaSans(
                                        fontSize: 24,
@@ -327,7 +329,7 @@ class _LoginPageState extends State<LoginPage> {
                                              mainAxisAlignment: MainAxisAlignment.center,
                                              children: [
                                                Image.network(
-                                                 'https://lh3.googleusercontent.com/aida-public/AB6AXuBGUuJXDkhq8kx7XHtueA8MvRTJdRKkn8J92B4MGWBaB4TaxBojFPAkIMurtrQCvSdR66VlH1Z7_9lJZ2MQa_c0ymAVxws36QlTa9k3UfJWxu16OJVgPL2sVK0RhFR5-nzP0oRRRkffAyhi2lwdxZC5tgvZluPFzBBmRFfzFnhP6ksYRCI-s6AB4BYUwFJEPu-Q1cpgW-reOjilyhXRNq3O0IHavm9LNStXKBc1MCQTCeEqnl9sz5t9ZSVT6QMqPwS84WV7JXZ55qpn',
+                                                 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png',
                                                  height: 20,
                                                  width: 20,
                                                ),
@@ -360,7 +362,7 @@ class _LoginPageState extends State<LoginPage> {
                                              mainAxisAlignment: MainAxisAlignment.center,
                                              children: [
                                                Image.network(
-                                                 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAY6fEE7J_y3ghNlbyaGRXfWrO9POp9OSgE8IkFi83ZUjR-ao9EEq2o3TZQrbn3ufhwMterGT609ulljUb_dG2a17IxxxiCNU5x7oQQEQntc5s41Ndra6GfZ4n5fNVcG9f9AWiTFYNs0cC3A6Mu1EAqonGCTIViD2mPxU7N1Jk0xjDJnxVwiCqVT1vTqm7BIHPn6QI0hurifpyLApEYVViTNE-D-MwRn7T9VlGvusAZ1GKSMdP1OMd8vCWEGIQDBFU9kVNLeV_MtiU',
+                                                 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png',
                                                  height: 20,
                                                  width: 20,
                                                ),
@@ -397,6 +399,13 @@ class _LoginPageState extends State<LoginPage> {
                                                color: primaryColor,
                                              ),
                                              // Recognizer here for tap
+                                             recognizer: TapGestureRecognizer()
+                                               ..onTap = () {
+                                                 Navigator.push(
+                                                   context,
+                                                   MaterialPageRoute(builder: (context) => const RegistrationPage()),
+                                                 );
+                                               },
                                            ),
                                          ],
                                        ),
