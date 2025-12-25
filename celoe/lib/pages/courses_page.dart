@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'my_course_page.dart';
+import 'course_overview_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -212,14 +213,24 @@ class _CoursesPageState extends State<CoursesPage> {
                       else
                         ...courses.map((course) => Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: _buildCourseCard(
-                            title: course['title'],
-                            description: course['description'],
-                            lessons: course['lessons'],
-                            duration: course['duration'],
-                            icon: course['icon'],
-                            iconBg: course['iconBg'],
-                            iconColor: course['iconColor'],
+                          child: GestureDetector(
+                            onTap: () {
+                              if (course['title'] == 'Desain Web Dasar') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const CourseOverviewPage()),
+                                );
+                              }
+                            },
+                            child: _buildCourseCard(
+                              title: course['title'],
+                              description: course['description'],
+                              lessons: course['lessons'],
+                              duration: course['duration'],
+                              icon: course['icon'],
+                              iconBg: course['iconBg'],
+                              iconColor: course['iconColor'],
+                            ),
                           ),
                         )),
                     ],

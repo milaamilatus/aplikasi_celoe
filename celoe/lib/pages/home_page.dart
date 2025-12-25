@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'courses_page.dart';
 import 'profile_page.dart';
+import 'course_overview_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -348,76 +349,86 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildCourseCard(String title, String level, String duration, IconData icon, MaterialColor color) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[100]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 2,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: color.withValues(alpha: 0.4),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        if (title == 'Desain Web Dasar') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CourseOverviewPage()),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.grey[100]!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 2,
             ),
-            child: Icon(icon, color: Colors.white, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.inter(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: const Color(0xFF1E293B),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: color.withValues(alpha: 0.4),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF1F5F9), // Slate-100
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        level,
-                        style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF64748B)),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      duration,
-                      style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF94A3B8)), // Slate-400
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
+              child: Icon(icon, color: Colors.white, size: 24),
             ),
-          ),
-          const Icon(Icons.chevron_right, color: Color(0xFFCBD5E1)), // Slate-300
-        ],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: const Color(0xFF1E293B),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF1F5F9), // Slate-100
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          level,
+                          style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF64748B)),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        duration,
+                        style: GoogleFonts.inter(fontSize: 10, color: const Color(0xFF94A3B8)), // Slate-400
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: Color(0xFFCBD5E1)), // Slate-300
+          ],
+        ),
       ),
     );
   }
