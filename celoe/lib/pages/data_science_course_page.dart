@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'data_science_learning_page.dart';
 
 class DataScienceCoursePage extends StatefulWidget {
   const DataScienceCoursePage({super.key});
@@ -281,7 +282,12 @@ class _DataScienceCoursePageState extends State<DataScienceCoursePage> {
                 ),
               ),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const DataScienceLearningPage()),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   foregroundColor: Colors.white,
