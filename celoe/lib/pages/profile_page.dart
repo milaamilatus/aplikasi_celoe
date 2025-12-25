@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login_page.dart';
 import 'edit_profile_page.dart';
+import 'my_course_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -152,7 +153,12 @@ class _ProfilePageState extends State<ProfilePage> {
                          }
                        }),
                        const SizedBox(height: 16),
-                       _buildMenuItem(context, Icons.school, 'Kursus Saya', primaryColor),
+                       _buildMenuItem(context, Icons.school, 'Kursus Saya', primaryColor, onTap: () {
+                         Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => const MyCoursePage()),
+                         );
+                       }),
                        const SizedBox(height: 16),
                        _buildMenuItem(context, Icons.help_outline, 'Pusat Bantuan', primaryColor),
                        const SizedBox(height: 24),

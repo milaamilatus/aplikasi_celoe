@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'my_course_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -119,7 +120,7 @@ class _CoursesPageState extends State<CoursesPage> {
                         Container(
                           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.transparent),
                           child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                            icon: const Icon(Icons.add, color: Color(0xFFE91E63), size: 16),
                             onPressed: () {
                               if (Navigator.canPop(context)) Navigator.pop(context);
                             },
@@ -156,7 +157,7 @@ class _CoursesPageState extends State<CoursesPage> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
+                            color: const Color(0xFFE91E63).withOpacity(0.1),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -243,12 +244,12 @@ class _CoursesPageState extends State<CoursesPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? primaryColor.withValues(alpha: 0.1) : Colors.white,
+          color: isSelected ? primaryColor.withOpacity(0.1) : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: isSelected ? null : Border.all(color: Colors.transparent),
           boxShadow: isSelected ? [] : [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Colors.black.withOpacity(0.05),
               blurRadius: 4,
               offset: const Offset(0, 2),
             ),
@@ -282,7 +283,7 @@ class _CoursesPageState extends State<CoursesPage> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -323,7 +324,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   description,
                   style: GoogleFonts.poppins(
                     fontSize: 12,
-                    color: const Color(0xFF9CA3AF),
+                    color: const Color(0xFFE91E63),
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
