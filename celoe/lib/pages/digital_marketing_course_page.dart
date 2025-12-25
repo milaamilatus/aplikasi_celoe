@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'digital_marketing_learning_page.dart';
 
 class DigitalMarketingCoursePage extends StatefulWidget {
   const DigitalMarketingCoursePage({super.key});
@@ -439,84 +440,89 @@ class _DigitalMarketingCoursePageState extends State<DigitalMarketingCoursePage>
                             _buildReviewCard('Dian Anggraini', '1 minggu yang lalu', 'Sangat membantu karir saya. Modul SEO-nya daging banget! Hanya saja audio di modul 3 agak kecil sedikit.', null, 'DA'),
                             const SizedBox(height: 16),
                              SizedBox(
-                              width: double.infinity,
-                              child: OutlinedButton(
-                                onPressed: () {},
-                                style: OutlinedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 12),
-                                  side: BorderSide(color: Colors.grey[200]!),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                                ),
-                                child: Text(
-                                  'Lihat Semua Ulasan',
-                                  style: GoogleFonts.lexend(
-                                    color: Colors.grey[500],
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                               width: double.infinity,
+                               child: OutlinedButton(
+                                 onPressed: () {},
+                                 style: OutlinedButton.styleFrom(
+                                   padding: const EdgeInsets.symmetric(vertical: 12),
+                                   side: BorderSide(color: Colors.grey[200]!),
+                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                 ),
+                                 child: Text(
+                                   'Lihat Semua Ulasan',
+                                   style: GoogleFonts.lexend(
+                                     color: Colors.grey[500],
+                                     fontSize: 12,
+                                     fontWeight: FontWeight.w600,
+                                   ),
+                                 ),
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ],
+                   ),
+                 ),
+               ),
+             ],
+           ),
+
+           // Sticky Bottom Button
+           Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [Colors.white, Colors.white.withOpacity(0)],
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 48),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const DigitalMarketingLearningPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 10,
+                    shadowColor: Colors.red.withOpacity(0.3),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Start Course',
+                        style: GoogleFonts.lexend(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
                         ),
                       ),
+                      const SizedBox(width: 8),
+                      const Icon(Icons.arrow_forward, size: 20),
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
-
-          // Sticky Bottom Button
-          Positioned(
-             bottom: 0,
-             left: 0,
-             right: 0,
-             child: Container(
-               decoration: BoxDecoration(
-                 gradient: LinearGradient(
-                   begin: Alignment.bottomCenter,
-                   end: Alignment.topCenter,
-                   colors: [Colors.white, Colors.white.withOpacity(0)],
-                 ),
-               ),
-               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 48),
-               child: ElevatedButton(
-                 onPressed: () {},
-                 style: ElevatedButton.styleFrom(
-                   backgroundColor: primaryColor,
-                   foregroundColor: Colors.white,
-                   padding: const EdgeInsets.symmetric(vertical: 16),
-                   shape: RoundedRectangleBorder(
-                     borderRadius: BorderRadius.circular(12),
-                   ),
-                   elevation: 10,
-                   shadowColor: Colors.red.withOpacity(0.3),
-                 ),
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [
-                     Text(
-                       'Start Course',
-                       style: GoogleFonts.lexend(
-                         fontSize: 16,
-                         fontWeight: FontWeight.bold,
-                         letterSpacing: 0.5,
-                       ),
-                     ),
-                     const SizedBox(width: 8),
-                     const Icon(Icons.arrow_forward, size: 20),
-                   ],
-                 ),
-               ),
-             ),
-          ),
-          
-          // Note: The HTML design has a bottom nav bar *on top* of the sticky button area or below it.
-          // Usually valid detail pages don't have bottom nav. I'll stick with just the Start button as per modern UX.
-        ],
-      ),
-    );
+           ),
+           
+           // Note: The HTML design has a bottom nav bar *on top* of the sticky button area or below it.
+           // Usually valid detail pages don't have bottom nav. I'll stick with just the Start button as per modern UX.
+         ],
+       ),
+     );
   }
 
   Widget _buildBadge(IconData icon, String text, Color bgColor, Color textColor) {
