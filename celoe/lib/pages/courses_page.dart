@@ -4,6 +4,7 @@ import 'my_course_page.dart';
 import 'course_overview_page.dart';
 import 'digital_marketing_course_page.dart';
 import 'ux_ui_course_page.dart';
+import 'data_science_course_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -231,6 +232,11 @@ class _CoursesPageState extends State<CoursesPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const UxUiCoursePage()),
+                                );
+                              } else if (course['title'] == 'Data Science Dasar') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const DataScienceCoursePage()),
                                 );
                               }
                             },
