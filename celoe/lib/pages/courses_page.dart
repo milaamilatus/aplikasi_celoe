@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'my_course_page.dart';
 import 'course_overview_page.dart';
+import 'digital_marketing_course_page.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -219,6 +220,11 @@ class _CoursesPageState extends State<CoursesPage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const CourseOverviewPage()),
+                                );
+                              } else if (course['title'] == 'Pemasaran Digital') {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const DigitalMarketingCoursePage()),
                                 );
                               }
                             },

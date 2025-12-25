@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'courses_page.dart';
 import 'profile_page.dart';
 import 'course_overview_page.dart';
+import 'digital_marketing_course_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -355,6 +356,11 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const CourseOverviewPage()),
+          );
+        } else if (title == 'Pemasaran Digital') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DigitalMarketingCoursePage()),
           );
         }
       },
